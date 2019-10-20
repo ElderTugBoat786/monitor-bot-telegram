@@ -1,0 +1,16 @@
+{
+  "name": "monitor-bot-telegram",
+  "version": "1.0.0",
+  "description": "Simple telegram bot to monitor raspberry pi",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Andrea Padricelli",
+  "license": "ISC",
+  "dependencies": {
+    "core-util-is": "^1.0.2",
+    "dotenv": "^8.2.0",
+    "telegraf": "^3.33.0"
+  }
+}
