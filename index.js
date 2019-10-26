@@ -28,8 +28,8 @@ bot.start((message) => {
 })
 
 bot.command('checkip', (ctx) => {
-    if (!allowedUser(message.from.id)) {
-      return message.reply('Non hai i permessi per questa chat!!');
+    if (!allowedUser(ctx.from.id)) {
+      return ctx.reply('Non hai i permessi per questa chat!!');
     }
     checkCorretIpDns(ctx)
   })
