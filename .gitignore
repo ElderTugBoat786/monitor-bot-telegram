@@ -60,5 +60,5 @@ typings/
 # next.js build output
 .next
 
-# env file
-.env
+# include env exmple file
+!.env.example
