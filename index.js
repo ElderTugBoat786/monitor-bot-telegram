@@ -1,41 +1,41 @@
 require('dotenv').config()
+
+const dns = require('dns');
+const publicIp = require('public-ip')
+
 const Telegraf = require('telegraf');
 const bot = new Telegraf(process.env.BOT_API_KEY);
 
-
 function allowedUser(id) {
-  return true;
-    allowedUserList = [] // Add .env variables for allowed user
+    return process.env.ALLOWED_USER.split(' ').includes(id.toString())
+}
 
-    if (allowedUserList.includes(id)) {
-      return true;
-    }
-    return false;
+function checkCorretIpDns(ctx){
+  dns.lookup(process.env.DOMAIN,(err,address,family) => {
+    (async () => {
+      localPublicIp = await publicIp.v4();
+      ctx.reply('PublicIp '+localPublicIp+'\n DNS lookupIp '+address);
+    })()
+  })
 }
 
 bot.start((message) => {
-  console.log('started:', message.from.id)
-
+  // check if user is allowed to user bot
   if (!allowedUser(message.from.id)) {
-    console.log('user not have permission');
     return message.reply('Non hai i permessi per questa chat!!');
   }
-  return message.reply('Hello my friend, write anything to start search!!');
+  return message.reply('Hello my friend');
 })
 
-bot.on('text', message=> {
-  if (!allowedUser(message.from.id)) {
-    console.log('user not have permission');
-    return message.reply('Non hai i permessi per questa chat!!');
-  }
-  console.log('ciao');
-
-  console.log(message.message);
-})
-
+bot.command('checkip', (ctx) => {
+    if (!allowedUser(message.from.id)) {
+      return message.reply('Non hai i permessi per questa chat!!');
+    }
+    checkCorretIpDns(ctx)
+  })
 
 // Implement here function to check ip or other stuff
 //setInterval(yourFunction, 1000 * 60 * 60);
 
-
 bot.startPolling();
+console.log('Bot started');

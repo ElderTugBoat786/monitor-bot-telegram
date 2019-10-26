@@ -10,7 +10,9 @@
   "license": "ISC",
   "dependencies": {
     "core-util-is": "^1.0.2",
+    "domain-ping": "^0.1.10",
     "dotenv": "^8.2.0",
+    "public-ip": "^3.2.0",
     "telegraf": "^3.33.0"
   }
 }
