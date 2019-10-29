@@ -10,12 +10,9 @@ function allowedUser(id) {
     return process.env.ALLOWED_USER.split(' ').includes(id.toString())
 }
 
-function checkCorretIpDns(ctx){
-  dns.lookup(process.env.DOMAIN,(err,address,family) => {
-    (async () => {
-      localPublicIp = await publicIp.v4();
-      ctx.reply('PublicIp '+localPublicIp+'\n DNS lookupIp '+address);
-    })()
+async function checkCorrectIpDns(domain){
+  dns.lookup(domain, (err,address,family) => {
+    return {localPublicIp: await publicIp.v4(), address}
   })
 }
 
@@ -31,7 +28,8 @@ bot.command('checkip', (ctx) => {
     if (!allowedUser(ctx.from.id)) {
       return ctx.reply('Non hai i permessi per questa chat!!');
     }
-    checkCorretIpDns(ctx)
+    var r = await checkCorretIpDns(ctx);
+    ctx.reply('PublicIp '+r.localPublicIp+'\n DNS lookupIp '+r.address);
   })
 
 // Implement here function to check ip or other stuff
