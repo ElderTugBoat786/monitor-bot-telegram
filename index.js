@@ -6,6 +6,18 @@ const publicIp = require('public-ip')
 const Telegraf = require('telegraf');
 const bot = new Telegraf(process.env.BOT_API_KEY);
 
+
+function automatedCheckip(){
+  dns.lookup(process.env.DOMAIN,(err,address,family) => {
+    (async () => {
+      localPublicIp = await publicIp.v4();
+      if (address != localPublicIp) {
+        bot.telegram.sendMessage(process.env.ALLOWED_USER.split(' ')[0],`⚠ Dns record (${address}) != LocalPublicIP (${localPublicIp}) `);
+      }
+    })()
+  })
+}
+
 function allowedUser(id) {
     return process.env.ALLOWED_USER.split(' ').includes(id.toString())
 }
@@ -38,4 +50,5 @@ bot.command('checkip', (ctx) => {
 //setInterval(yourFunction, 1000 * 60 * 60);
 
 bot.startPolling();
+setInterval(automatedCheckip, process.env.CHECK_IP_INTERVAL );
 console.log('Bot started');
